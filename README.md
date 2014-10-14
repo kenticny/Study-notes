@@ -1,7 +1,7 @@
 Personal
 ========
 
-#### Javascript 小技巧记录
+#### Javascript 灵光一现
 ========
 
 + 字符串重复
