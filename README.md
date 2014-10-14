@@ -1,7 +1,7 @@
 Personal
 ========
 
-#### Javascript 灵光一现
+#### CodeWars 战斗笔记 
 ========
 
 + 字符串重复
