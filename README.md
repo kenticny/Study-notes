@@ -22,6 +22,15 @@ function noDuplicate(arr) {
 }
 ```
 
+- 截取两位小数字符
+
+```javascrip
+function getFixed(num, b) {
+  // toFixed方法会四舍五入
+  return num.toFixed(b + 1).replace(/\d$/, "");
+}
+```
+
 #### Code 水滴石穿
 =======
 
