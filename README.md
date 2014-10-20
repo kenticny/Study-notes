@@ -28,7 +28,7 @@ noDuplicate([1,2,3,4,1,2]); // result: [1,2,3,4]
 
 - 截取两位小数字符
 
-```javascrip
+```javascript
 function getFixed(num, b) {
   // toFixed方法会四舍五入
   return num.toFixed(b + 1).replace(/\d$/, "");
