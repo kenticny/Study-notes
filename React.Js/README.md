@@ -64,9 +64,15 @@ React.render(
 ##### 2.4 props 属性
 
 props 为React中实例元素的属性
+可以通过`getDefaultProps()`方法设置默认属性
 
 ```javascript
 var MyHome = React.createClass({
+    getDefaultProps: function() {
+        return {
+            address: "default_address"
+        }
+    },
     render: function() {
 
         // 通过自身属性
@@ -80,6 +86,26 @@ React.render(
     document.querySelector("body")
 );
 ```
+
+可以通过`this.props.children`来获取传入的组件
+
+```javascript
+var MyHome = React.createClass({
+    render: function() {
+        return (
+            // this.props.children可以获取<div>abc</div>
+            <div>{this.props.children}</div>
+        );
+    }
+});
+
+React.render(
+    <MyHome><div>abc</div></MyHome>,
+    document.querySelector("body")
+);
+```
+
+
 
 ##### 2.5 内联样式
 
@@ -172,3 +198,55 @@ props是无状态的，仅取决于传入的值，所以需要state来记录组�
 var el = React.findDOMNode(this.ref.name)
 el.value // abc
 ```
+
+##### 2.9 mixin特性
+mixin的意思是混合，糅合，在React中，可以将不同的组件中需要用到的相同的方法提取出来，然后通过mixin属性将这些方法拷贝到组件中。
+mixin是一个数组，可以传入多个对象，但是对象中的属性不可以同名
+
+```javascript
+var commonUtils = {
+    add: function() {},
+    minus: function() {}
+}
+
+React.createClass({
+    mixins: [commonUtils],
+    render: function() {
+
+        // 调用commonUtils中方法
+        this.add();
+        this.minus();
+        
+        return <div></div>
+    } 
+});
+```
+
+##### 2.10 Prop 验证
+React提供了一些验证器来验证传入数据的有效性，可以通过`React.propTypes`进行验证
+
+```javascript
+React.createClass({
+    propTypes: {
+        
+        // 可以声明 prop 为指定的 JS 基本类型
+        optional: React.PropTypes.array, // array / bool / func / number / object / string
+
+        // React 元素
+        element: React.PropTypes.element,
+
+        // 指定多个类型中的一个
+        union: React.PropTypes.oneOfType([
+            React.PropTypes.string,
+            React.PropTypes.number
+        ]),
+
+        // 限制只有一个子级传入
+        children: React.PropTypes.element.isRequired
+    }
+    /* ... */
+});
+```
+
+#### 3 React Router
+
