@@ -60,6 +60,7 @@ Python采用`缩进语法`，使用`#`注释，而且`大小写敏感`
 
 - 空值: 使用`None`表示
 - 列表: 类似数组, 使用`[]`定义, 通过`len`获取列表长度
+- 元组: 不可更改的数组
 - 字典:
 - 自定义类型:
 
@@ -164,3 +165,178 @@ print b  # [1, 2, 3, 4]
 		list.pop(2)  # 'a'
 		# [1, False, True]
 		```
+		
+##### 2.5 元组(Tuple)
+
+定义一个元组
+
+```python
+tuple = (1, 2, 3)
+```
+如果定义只有一个元素的元组
+
+```python
+tuple = (1,)
+```
+元组不可变是指元组中元素`指向的位置不可变`，所以当元组中元素是一个引用的时候，引用的内容是可更改的
+
+```python
+tuple = (1, 2, ['a', 'b'])
+tuple[2][0] = 'x'
+print tuple    # (1, 2, ['x', 'b'])
+```
+
+##### 2.6 流程控制（判断和循环）
+
+- 条件判断
+
+	条件判断使用`if`语句，程序块不需要使用`{}`包括，使用`缩进`控制，和其他语言不同的是，`if条件`后和`else`要加`:`，多重条件判断使用`elif`关键字
+	
+	```python
+	age = 20
+	if age > 18:
+		print 'The age more than 18'
+		print 'adult'
+	elif age < 10:
+		print 'You are too young'
+	else:
+		print 'The age less than 18'
+	```
+
+	条件判断可以使用简写，类似于Javascript，`非零数值`、`非空字符串`、`非空list`都为`True`，其余为`False`
+	
+	```python
+	x = 'abc'
+	if x:
+		print 'Not Null'
+	```
+
+- 循环
+
+	和大多数语言一直，循环有两种，`for循环`和`while循环`，`for循环`格式为`for x in ...`，可以遍历list或者tuple中的元素
+	
+	```python
+	names = ['James', 'Davis', 'Kurie']
+
+	# names也可以是元组
+	# names = ('James', 'Davis', 'Kurie')
+	
+	for name in names:
+		print name
+	
+	# James
+	# Davis
+	# Kurie
+	```
+	
+	`range(n)`可以生成0-n的数组，比如计算0-100的和，可以遍历一个range生成的数组
+	
+	```python
+	sum = 0
+	for i in range(101):
+		sum += i
+	print sum   # 5050
+	```
+	
+	`while循环`和其他语言实现基本相同，使用`while`实现上面的问题
+	
+	```python
+	sum = 0
+	i = 1
+	while i <= 100:
+		sum += i
+		i += 1
+	print sum 
+	```
+	
+##### 2.7 字典
+
+`Dictionary`和其他语言中的`Map`或者`Object`类似，都是键值对，定义一个字典可以使用`{key: value}`形式定义
+
+```python
+dic = {'name': 'kenticny', 'age': 25 }
+print dic['name']     # 'kenticny'
+```
+
+可以通过key在字典中添加值
+
+```python
+dic['gender'] = 'male'
+print dic    # {'name': 'kenticny', 'age': 25, 'gender': 'male' }
+```
+
+如果key不在字典中，使用`dic[key]`获取值会报错，可以通过`in`判断key是否在字典中
+
+```python
+'gender' in dic   # True
+```
+
+也可以通过`get`方法来获取值，如果不存在则返回`None`
+
+```python
+dic.get('ok')   # None
+```
+
+`get`方法如果key不存在还可以指定返回值
+
+```python
+dic.get('name', 'oo')   # kenticny
+dic.get('xxx', 'oo')    # oo
+```
+
+`pop`方法可以删除字典中对应key的值并返回
+
+```python
+gender = dic.pop('gender')    # male
+print dic     # {'name': 'kenticny', 'age': 25 }
+```
+
+##### 2.8 集合（Set）
+
+`set集合`是一组key的集合，没有值，在集合中，key没有重复的
+
+```python
+set1 = set([1, 2, 3])
+print set1   # set([1, 2, 3])
+```
+
+`add`方法可以在集合中添加元素，如果添加了重复的元素则没有体现
+
+```python
+set1.add(4)
+print set1   # set([1,2,3,4])
+set1.add(2)
+print set1   # set([1,2,3,4])
+```
+
+`remove`方法可以删除集合中的元素，如果元素不存在则会报错
+
+```python
+set1.remove(2)
+print set1    # set([1,3,4])
+```
+
+通过for循环可以遍历集合
+
+```python
+for i in set1:
+	print i
+
+# 1
+# 3
+# 4
+```
+
+可以通过`&`和`|`来获取交集或者并集的操作
+
+```python
+set1 = set([1,2,3])
+set2 = set([2,3,4,5])
+set3 = set1 & set2
+set4 = set1 | set2
+print set1, set2
+# set([2,3]), set([1,2,3,4,5])
+```
+
+##### 2.9 函数
+
