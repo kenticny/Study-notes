@@ -339,3 +339,112 @@ print set1, set2
 ```
 
 ##### 2.9 函数
+
+定义函数使用`def`关键字
+
+```python
+def say_hello(name):
+	print 'Hello, ' + name
+	
+say_hello('kenticny')   # Hello, kenticny
+```
+
+`pass`作为占位符，可以避免没有执行代码的时候报错
+
+```python
+if x > 0:
+	pass
+```
+
+`isinstance`可以检查函数出参数的类型
+
+```python
+def my_abs(a):
+	if not isinstance(a, (int, float)):
+		raise TypeError('Error Parameters Type')
+	if a > 0:
+		return a
+	else:
+		return -a
+```
+
+函数还可以返回多个值
+
+```python
+def coordinate(x, y):
+	if x > 0 and y > 0:
+		return x, y
+	else:
+		return 0, 0
+
+a, b = coordinate(1, 8)
+print a, b     # 1, 8
+```
+
+由于调用函数传递的参数数量必须和定义函数时一致，所以当有可选参数时，函数可以使用默认参数来实现
+
+```python
+def register(name, age, city = 'Beijing', gender = 'Unknown'):
+	if age < 18:
+		return 'You are Young'
+	else:
+		return '%s, %d, %s, %s' % (name, age, city, gender)
+	
+register('kenticny', 20)
+register('kenticny', 20, 'Shanghai')
+register('kenticny', 20, gender = 'Male')
+register('kenticny', 20, 'Shanghai', 'Female')
+```
+
+> 容易犯的错误
+> 
+> 默认参数不可以默认为引用的参数，比如数组，如果需要使用数组，可以使用None作为参数的默认值
+> 
+```python
+def plus(L = None):
+	if L is None:
+		L = []
+	L.append('End')
+	return L
+```
+
+函数还可以传入可变参数，可变参数使用`*param`表示，可变参数的`类型`必须是一样的
+
+```python
+def addd(*numbers):
+	sum = 0
+	for i in numbers:
+		sum += i
+	return sum
+```
+
+可变参数传递可以直接传递某个数的参数，也可以在`数组`或者`元组`前加`*`表示
+
+```python
+addd(1,2,3)   # 6
+
+list = [1,2,3,4]
+addd(*list)   # 10
+
+tuple = (1,2,3,4)
+addd(*tuple)  # 10
+```
+
+函数可以传入关键字参数，关键字参数使用`**param`表示，可以以一个字典的形式传递参数
+
+```python
+def person(name, age, **option):
+	print name, age, option
+```
+
+关键字参数可以直接传递字典，在字典前加`**`表示
+
+```python
+person('kenticny', 15)     # kenticny 15 {}
+person('kenticny', 15, gender = 'male')   # kenticny 15 {'gender': 'male'}
+
+dic = {'a': 'aaaa', 'b': 'bbbb'}
+person('kenticny', 17, **dic)
+```
+
+> 当在一个函数中使用多种类型的参数时，必须按照 `固定参数`, `默认参数`, `可变参数`, `关键字参数`的顺序使用
