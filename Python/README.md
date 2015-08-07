@@ -291,6 +291,18 @@ gender = dic.pop('gender')    # male
 print dic     # {'name': 'kenticny', 'age': 25 }
 ```
 
+遍历字典，可以使用`iteritems()`方法
+
+```python
+dic = {'a': 'aaa', 'b': 'bbb', 'c': 'ccc'}
+for k, v in dic.iteritems():
+	print k, v
+
+# a  aaa
+# b  bbb
+# c  ccc
+```
+
 ##### 2.8 集合（Set）
 
 `set集合`是一组key的集合，没有值，在集合中，key没有重复的
@@ -448,3 +460,67 @@ person('kenticny', 17, **dic)
 ```
 
 > 当在一个函数中使用多种类型的参数时，必须按照 `固定参数`, `默认参数`, `可变参数`, `关键字参数`的顺序使用
+
+
+##### 2.10 高阶函数
+
+在函数也可将函数类型传入作为参数
+
+```python
+def say_hello(name):
+	print 'Hello, ' + name
+	
+def whoareyou(id, say):
+	if id == '0001':
+		say('Peter')
+	else:
+		say('Amy')
+		
+whoareyou('0001', say_hello)
+# Hello, Peter
+```
+
+### 3 特性
+
+##### 3.1 切片
+
+`切片`可以截取数组、元组、字符串中的一部分
+
+```python
+list = [1,2,3,4,5,6,7,8,9,10]
+tuple = (1,2,3,4,5,6,7,8,9,10)
+string = 'ABCDEFGHIJK'
+
+print list[0:4], tuple[0:4], string[0:4]
+# [1,2,3,4]  (1,2,3,4)  'ABCD'
+# 以下举例中list,tuple,string都适用
+
+print list[:4]     # [1,2,3,4]
+print list[:]      # [1,2,3,4,5,6,7,8,9,10] 该数组为复制，并非引用
+print list[5:]     # [6,7,8,9,10]
+print list[-3:-1]  # [8,9]
+print list[0:5:2]  # [1,3,5]  每隔两个取一个
+```
+
+##### 3.2 列表生成器
+
+即生成一个数组，当只需要生成简单的数列时，可以使用`range`实现
+
+```python
+range(1,11)    # [1,2,3,4,5,6,7,8,9,10]
+```
+
+生成复杂列表时可以使用生成器，下面例子为生成1-10的平方列表
+
+```python
+[x * x for x in range(1, 11)]  # [1,4,9,16,...,100]
+```
+
+列表生成器中循环可以进行嵌套
+
+```python
+[a + b for a in 'XY' for b in 'MN']  
+# ['XM', 'XN', 'YM', 'YN']
+```
+
+##### 3.3 生成器（generator）
