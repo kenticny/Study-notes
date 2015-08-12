@@ -480,6 +480,59 @@ whoareyou('0001', say_hello)
 # Hello, Peter
 ```
 
+##### 2.11 Map/Reduce
+
+`map(fn, list)`函数可以将list中的每个元素都经过fn作用
+
+```python
+list = [1,2,3,4,5]
+
+def square(x):
+	return x * x
+
+map(square, list)   # [1,4,9,16,25]
+```
+
+`reduce(fn, list)`函数可以将list中的两个元素通过fn做累计计算
+
+```python
+list = [1,2,3,4,5]
+
+def plus(a, b):
+	return a + b
+	
+reduce(plus, list)    # 15
+```
+
+##### 2.12 filter/sorted
+
+`filter(fn, list)`函数是将list中的元素按照fn进行筛选，返回True则保留，False则删除
+
+```python
+list = [2, 9, 3, 8, 10]
+
+def morethan5(x):
+	if x > 5:
+		return True
+	else:
+		return False
+		
+filter(morethan5, list)   # [9, 8, 10]
+
+```
+
+`sorted(list, fn)`函数是将list中的元素按照fn进行排序，返回True则交换，返回False则不交换，和其他函数不一样的是，`sorted`的第一个参数是数组，第二个参数是函数
+
+```python
+list = [1,8,3,4,2]
+
+def sort(a, b):
+	return a - b
+	
+sorted(list, sort)    # [1,2,3,4,8]
+```
+
+
 ### 3 特性
 
 ##### 3.1 切片
@@ -524,3 +577,16 @@ range(1,11)    # [1,2,3,4,5,6,7,8,9,10]
 ```
 
 ##### 3.3 生成器（generator）
+
+
+##### 3.4 Lambda表达式
+
+Lambda表达式是定义一个匿名函数
+
+```python
+map(x:x * x, [1,2,3,4,5])  # [1,4,9,16,25]
+
+# x: x * x 相当于
+# def fn(x):
+	return x * x
+```
