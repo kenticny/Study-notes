@@ -462,7 +462,7 @@ person('kenticny', 17, **dic)
 > 当在一个函数中使用多种类型的参数时，必须按照 `固定参数`, `默认参数`, `可变参数`, `关键字参数`的顺序使用
 
 
-##### 2.10 高阶函数
+##### 2.10 函数作为参数传递
 
 在函数也可将函数类型传入作为参数
 
@@ -480,7 +480,48 @@ whoareyou('0001', say_hello)
 # Hello, Peter
 ```
 
-##### 2.11 Map/Reduce
+##### 2.11 函数作为返回值
+
+一个函数的返回值也可以是函数
+
+```python
+def add(a):
+	# lambda表达式定义一个匿名函数
+	return lambda b: a + b
+
+add(5)     # <function <lambda> at 0x10f7e7ed8>
+add(5)(6)  # 11
+```
+
+返回值为函数时，每次返回的都是一个新的函数
+
+```python
+def do(a, b):
+	def add():
+		return a + b
+	return add 
+	
+f1 = add(15, 20)
+f2 = add(15, 20)
+
+print f1 == f2     # False
+```
+
+在函数中可以把相关变量封装成函数返回，这种方法叫做`闭包`
+
+```python
+def count():
+    fs = []
+    def sq(i):
+        return i * i
+    for i in range(1, 4):
+        fs.append(sq(i))
+    return fs
+
+print count()      # [1, 4, 9]
+```
+
+##### 2.12 Map/Reduce
 
 `map(fn, list)`函数可以将list中的每个元素都经过fn作用
 
@@ -504,7 +545,7 @@ def plus(a, b):
 reduce(plus, list)    # 15
 ```
 
-##### 2.12 filter/sorted
+##### 2.13 filter/sorted
 
 `filter(fn, list)`函数是将list中的元素按照fn进行筛选，返回True则保留，False则删除
 
@@ -579,7 +620,7 @@ range(1,11)    # [1,2,3,4,5,6,7,8,9,10]
 ##### 3.3 生成器（generator）
 
 
-##### 3.4 Lambda表达式
+##### 3.4 Lambda表达式(匿名函数)
 
 Lambda表达式是定义一个匿名函数
 
@@ -589,4 +630,11 @@ map(x:x * x, [1,2,3,4,5])  # [1,4,9,16,25]
 # x: x * x 相当于
 # def fn(x):
 	return x * x
+```
+
+Lambda表达式也可以给赋值为函数
+
+```python
+f = lambda x: x * x
+f(5)    # 25
 ```
