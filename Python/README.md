@@ -638,3 +638,72 @@ Lambda表达式也可以给赋值为函数
 f = lambda x: x * x
 f(5)    # 25
 ```
+
+##### 3.5 装饰器
+
+`装饰器`可以在代码运行期间动态添加功能而不需要改变原函数
+
+```python
+# *args, **kwargs适配所有参数
+# func.__name__ 返回函数名称
+
+def log(func):
+	def wrapper(*args, **kwargs):
+		print 'Start to ' + func.__name__
+		func(*args, **kwargs)
+		print 'End to ' + func.__name__
+		return func
+	return wrapper
+		
+@log
+def say_hello(name):
+	print name + ', Hello!'
+	
+say_hello('kenticny')
+
+# Start to say_hello
+# kenticny, Hello!
+# End to say_hello
+```
+
+装饰器也可以带参数
+
+```python
+def log(text):
+	def _wrapper(func):
+		def wrapper(*args, **kwargs):
+			print text + ':Execute ' + func.__name__
+			return func
+		return wrapper
+	return _wrapper
+	
+@log('DEBUG')
+def say_hello(name):
+	print name + ', Hello!'
+	
+say_hello('kenticny')
+
+# DEBUG:Execute say_hello
+# kenticny, Hello!
+```
+
+##### 3.5 模块
+
+通过`import`关键字引入模块使用
+
+```python
+# 引入模块
+import functools
+
+# 引入模块并赋别名
+import functools as ft
+
+# 引入模块中的函数
+from functools import partial
+```
+
+可以通过`pip`或者`easy_install`安装第三方模块
+
+```python
+pip install numpy
+```
