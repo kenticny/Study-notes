@@ -707,3 +707,147 @@ from functools import partial
 ```python
 pip install numpy
 ```
+
+### 4 面向对象编程
+
+##### 4.1 类
+
+```python
+class Student(object):
+    def __init__(self, name, age, score):
+        self.name = name
+        self.__age = age
+        self.score = score
+
+    def introduce(self):
+        print 'Hello, I am %s' % self.name
+
+s1 = Student('kenticny', 25, 100)
+
+s1.introduce()   # Hello, I am kenticny
+print s1.name    # kenticny
+print s1.__age   # Error
+```
+
+使用`class`关键字定义类，类名后是这个类继承的类，如果没有继承则为`object`，`__init__`方法为类的构造方法，`introduce`方法为成员方法，方法的第一个参数为`self`，在类中，双下划线`__`开头的变量为私有变量。
+
+```python
+
+```
+
+##### 4.2 对象信息
+
+可以通过`type()`函数或者`isinstance()`函数获取一个对象的类型，`types`库包含各种数据类型
+
+```python
+import types
+
+class Person(object):
+	pass
+
+p1 = Person()
+
+print type(p1)     # <class '__main__.Person'>
+print type(Person) # <type 'type'>
+print type(10)     # <type 'int'>
+print type(int)    # <type 'type'>
+
+print isinstance(Person, types.TypeType)  # True
+```
+
+##### 4.3 限制属性
+
+在class中可以通过`__slots__`限制类的属性
+
+```python
+import types
+class Student(object):
+	__solts__ = ('name', 'age', 'get_age')
+	
+s1 = Student()
+s1.name = 'kenticny'    # kenticny
+s1.age = 100            # 100
+s1.score = 100          # Error: has no attribute
+
+def get_student_age(self):
+	return self.age
+
+# 给s1对象的类定义方法，只可在s1中使用
+s1.get_age = types.MethodType(get_student_age, s1, Student)
+
+# 给Student类定义方法，可以在所有Student对象中使用
+Student.get_age = types.MethodType(get_student_age, None, Student)
+
+```
+
+##### 4.4 定义属性
+
+在一个类中有可以通过两种方法定义属性，第一种是使用`@property`装饰器
+
+```python
+class Person(object):
+	@property
+	def name(self):
+		return self.name
+	
+	@name.setter
+	def name(self, name):
+		if not isinstance(name, str):
+			raise ValueError('name type error')
+		self.name = name
+
+p1 = Person()
+p1.name = 'kenticny'      # kenticny
+p1.name = 100             # ValueError: name type error
+```
+
+还可以通过`property(fget=None, fset=None, fdel=None, fdoc = None)`方法定义类的属性
+
+```python
+class Person(object):
+	def getname(self):
+		return self.name
+		
+	def setname(self, name):
+		if not isinstance(name, str):
+			raise ValueError('name type error')
+		self.name = name
+	
+	name = property(getname, setname)
+	
+p2 = Person()
+p2.name = 'kenticny'     # kenticny
+p2.name = 100            # ValueError: name type error
+```
+
+##### 4.5 多重继承
+
+在Python中class可以继承多个class
+
+```python
+class Role(object):
+	def __init__(self, name, type):
+		self.name = name
+		self.type = type
+		
+	def introduce(self):
+		print 'name is %s, type is %s' % (self.name, self.type)
+		
+class Flyable(object):
+	def __init__(self, name):
+		self.name = name
+	
+	def fly(self):
+		print '%s, flying!!!' % self.name
+		
+class Swimable(object):
+	def __init__(self, name):
+		self.name = name
+		
+	def swim(self):
+		print '%s, swiming!!!' % self.name
+		
+class Xiaobin(Role, Flyable):
+	def __init__(self):
+		self.name = 
+```
