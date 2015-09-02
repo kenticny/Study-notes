@@ -909,3 +909,21 @@ class还有类似于`__init__`,`__slots__`的方法和属性，可以通过定�
 	print p.name        # kenticny
 	print p.age         # age attribute is not exist
 	```
+	
+- `__call__`: 可以使类的实例被调用，另外可以通过`callable`函数判断对象是否可以被调用。
+
+	```python
+	class Person(object):
+		def __call__(self):
+			print 'Person called'
+		
+	p = Person()
+	p()              # Person called
+	callable(p)      # True
+	```
+	
+##### 4.7 metaclass
+
+Pending
+
+##### 4.8 
