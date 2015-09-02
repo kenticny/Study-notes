@@ -849,5 +849,63 @@ class Swimable(object):
 		
 class Xiaobin(Role, Flyable):
 	def __init__(self):
-		self.name = 
+		self.name = 'xiaobin'
+		self.type = 'xb'
+
+class Shuibin(Xiaobin, Swimable):
+	def __init__(self):
+		self.name = 'shuibin'
+		self.type = 'xb'
+
+xb1 = Xiaobin()
+xb1.introduce()    # name is xiaobin, type is xb
+xb1.fly()          # xiaobin, flying!!!
+
+xb2 = Shuibin()
+xb2.introduce()    # name is shuibin, type is xb
+xb2.fly()          # shuibin, flying!!!
+xb2.swim()         # shuibin, swimming!!!
+
 ```
+
+##### 4.6 特殊属性
+
+class还有类似于`__init__`,`__slots__`的方法和属性，可以通过定义这些特殊属性来实现类的各种功能。
+
+- `__str__`: 可以定义class的输出格式
+
+	```python
+	class Person(object):
+		def __init__(self, name):
+			self.name = name
+			
+		def __str__(self):
+			print 'class named %s' % self.name
+			
+	print Person('kenticny')    # class named kenticny
+	```
+
+- `__repr__`: 定义在REPL环境下的输出内容
+
+- `__iter__`: 定义该对象可进行遍历，同时需要定义`next`方法，在使用for循环遍历时，会调用`next`方法，直到`raise StopIteration()`时停止遍历。
+
+- `__getitem__`: 可以通过`entity[index]`的方式获取值
+
+- `__setitem__`: 设置某个值
+
+- `__delitem__`: 删除某个值
+
+- `__getattr__`: get不存在属性时属性会调用该方法
+
+	```python
+	class Person(object):
+		def __init__(self, name):
+			self.name = name
+			
+		def __getattr__(self, attr):
+			return '%s attribute is not exist' % attr
+			
+	p = Person('kenticny')
+	print p.name        # kenticny
+	print p.age         # age attribute is not exist
+	```
