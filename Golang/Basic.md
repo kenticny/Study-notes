@@ -138,20 +138,12 @@ var arr1, arr2 = [5]string{}, [5]string{"a", "b", "c"}
 // 简略方式定义数组
 arr3 := [5]string{"a", "b", "c", "e"}
 
-arr4 := arr3[:3]
-arr4[2] = "x"
-
-fmt.Printf("%s\n%s", arr3, arr4) 
-// ["a", "b", "x", "e", ""]
-// ["a", "b", "x"]
-
-arr5 := [...]int{1, 2, 3, 4}
+arr4 := [...]int{1, 2, 3, 4}
 
 // 二维数组
-arr6 := [4][4]string{{"a", "b", "c"}, {"e", "f", "g"}, {"h", "i", "j", "k"}, {"x", "y"}}
+arr5 := [4][4]string{{"a", "b", "c"}, {"e", "f", "g"}, {"h", "i", "j", "k"}, {"x", "y"}}
 
 len(arr3)  // 4
-len(arr4)  // 3
 ```
 
 ##### 知识点：
@@ -161,7 +153,6 @@ len(arr4)  // 3
 - 可以通过`len(arr)`来获取数组长度
 - 定义数组和定义变量类似，可以使用简略方式定义
 - 数组赋值采用索引赋值，即`arr[0] = "xxx"`
-- 数组传值为引用传值，例如`arr3`和`arr4`(这种实质上是定义切片，参照下一节)
 - 可以采用`start:end`的形式访问连续下标的元素，包含`start`，不包含`end`
 - `arr[:5]`代表`arr[0:5]`, `arr[1:]`代表`arr[1:length]`
 - 二维数组采用二维索引值进行访问和赋值，即`arr[0][0]`
@@ -172,31 +163,84 @@ len(arr4)  // 3
 ### 切片 Slice
 
 ```go
-arr := [5]int{1, 2, 3, 4, 5}
+// slice定义
+var slice1 []int
+slice2 := make([]int, 10)
 
-slice1 := arr[:]
+// 可以通过append方法在slice中追加单个或者多个元素
+slice1 = append(slice1, 1, 2, 3)
+slice2 = append(slice2, 4, 5)
+slice3 := append(slice1, 6, 7, 8, 9)
+/**
+ * results: 
+ * slice1: [1, 2, 3]
+ * slice2: [4, 5]
+ * slice3: [1, 2, 3, 6, 7, 8, 9]
+ */
 
-slice2 := []int{1, 2, 3, 4, 5}
+// append后的结果为一个新的slice对象
+slice1[2] = 100
+slice2[1] = 200
+slice3[4] = 300
+/** 
+ * results:
+ * slice1: [1, 2, 100]
+ * slice2: [4, 200]
+ * slice3: [1, 2, 3, 6, 300, 8, 9]
+ */
 
-slice2 = append(slice2, 6, 7)  // cap is 10
-// if append 6, 7, 8, 9, 10, 11  cap is 12
+// 可以通过make关键字声明一个新的slice，也可以通过索引起止位置声明一个新的slice
+slice4 := make([]int, 3)
+slice4[0] = 1
+slice4[1] = 2
+slice4[2] = 3
+slice5 := slice4[1:]
+/**
+ * results:
+ * slice4: [1, 2, 3]
+ * slice5: [2, 3]
+ */
 
-slice2 = append(slice2, 8, 9, 10, 11) // cap is 20
 
-cap(slice2) // capacity
-len(slice2) // length
+// slice为引用类型，源相同的slice均指向同一个内存地址
+slice4[1] = 100
+/**
+ * results:
+ * slice4: [1, 100, 3]
+ * slice5: [100, 3]
+ */
+
+// len(slice)可以获取slice的长度，cap(slice)可以获取slice的容量
+// 当追加元素时长度超过容量时，容量扩充为`添加元素的个数或者当前元素的个数（去较大者）`的两倍
+
+/* slice4 length is 3, capacity is 3 */
+
+slice4 = append(slice4, 4, 5)
+
+/* slice4 length is 5, capacity is 6 */
+
+slice4 = append(slice4, 6, 7, 8, 9, 10, 11, 12, 13, 14)
+
+/* slice4 length is 14, capacity is 14 */
+
+// copy(dest, src)可以拷贝一个新的slice，两个slice不指向同一个内存
+slice6 := []int{1, 2, 3}
+slice7 := make([]int, len(slice6))
+copy(slice7, slice6)
+/**
+ * results:
+ * slice6: [1, 2, 3]
+ * slice7: [1, 2, 3]
+ */
+
+slice6[1] = 500
+/**
+ * results:
+ * slice6: [1, 500, 3]
+ * slice7: [1, 2, 3]
+ */
 ```
 
-##### 知识点：
-
-- ***切片的定义和数组一样，只是不需要声明长度***
-- 切片有两个属性，`长度`和`容量`，长度为当前切片中元素的个数，容量为当前切片可以存储最大元素个数，在切片中添加元素超过容量时，会再次分配容量。
-- 可以从一个数组或者一个切片生成一个新的切片，采用`slice := arr[1:3]`的方式
-- 从同一个数组或者切片中生成的新的切片引用指向原数组或者切片
-- `len(slice)`获取切片长度
-- `cap(slice)`获取切片容量
-- `append(slice, 1)`向切片中追加元素，返回新的切片
-- `copy(new_slice, slice)`复制切片
 
 ------
 
