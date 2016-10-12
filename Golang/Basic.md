@@ -106,6 +106,15 @@ const (
 	g = iota           // 0
 	h = iota           // 1
 )
+const (
+	Mon = iota + 2     // 2
+	Tue                // 3
+	Wed                // 4
+	Thu = 100          // 100
+	Fri                // 100
+	Sat = iota + 3     // 8
+	Sun                // 9
+)
 ```
 
 ##### 知识点：
@@ -114,6 +123,7 @@ const (
 - `iota`从`0`开始，并且只在分组定义常量中累加
 - 当一个分组定义结束时，`iota`再次从`0`开始
 - 当两个变量同时在一行定义时，`iota`的值不进行累加
+- 当之定义第一`iota`时，下面定义的常量和第一个的表达式相同，只是iota做累加，并且在`iota`中断时，`iota`本身还会自动累加，只是不再显示，如果需要显示，需要手动恢复
 
 
 ------
@@ -129,15 +139,16 @@ var arr1, arr2 = [5]string{}, [5]string{"a", "b", "c"}
 arr3 := [5]string{"a", "b", "c", "e"}
 
 arr4 := arr3[:3]
-
 arr4[2] = "x"
 
 fmt.Printf("%s\n%s", arr3, arr4) 
 // ["a", "b", "x", "e", ""]
 // ["a", "b", "x"]
 
+arr5 := [...]int{1, 2, 3, 4}
+
 // 二维数组
-arr5 := [4][4]string{{"a", "b", "c"}, {"e", "f", "g"}, {"h", "i", "j", "k"}, {"x", "y"}}
+arr6 := [4][4]string{{"a", "b", "c"}, {"e", "f", "g"}, {"h", "i", "j", "k"}, {"x", "y"}}
 
 len(arr3)  // 4
 len(arr4)  // 3
@@ -146,6 +157,7 @@ len(arr4)  // 3
 ##### 知识点：
 
 - ***数组是定长的，长度在定义数组是需要声明***
+- ***可以通过`...`来自动计算数组长度***
 - 可以通过`len(arr)`来获取数组长度
 - 定义数组和定义变量类似，可以使用简略方式定义
 - 数组赋值采用索引赋值，即`arr[0] = "xxx"`
@@ -158,6 +170,83 @@ len(arr4)  // 3
 ------
 
 ### 切片 Slice
+
+```go
+arr := [5]int{1, 2, 3, 4, 5}
+
+slice1 := arr[:]
+
+slice2 := []int{1, 2, 3, 4, 5}
+
+slice2 = append(slice2, 6, 7)  // cap is 10
+// if append 6, 7, 8, 9, 10, 11  cap is 12
+
+slice2 = append(slice2, 8, 9, 10, 11) // cap is 20
+
+cap(slice2) // capacity
+len(slice2) // length
+```
+
+##### 知识点：
+
+- ***切片的定义和数组一样，只是不需要声明长度***
+- 切片有两个属性，`长度`和`容量`，长度为当前切片中元素的个数，容量为当前切片可以存储最大元素个数，在切片中添加元素超过容量时，会再次分配容量。
+- 可以从一个数组或者一个切片生成一个新的切片，采用`slice := arr[1:3]`的方式
+- 从同一个数组或者切片中生成的新的切片引用指向原数组或者切片
+- `len(slice)`获取切片长度
+- `cap(slice)`获取切片容量
+- `append(slice, 1)`向切片中追加元素，返回新的切片
+- `copy(new_slice, slice)`复制切片
+
+------
+
+### Map
+
+```go
+map1 := make(map[string]int)
+map2 := map[string]int {"a": 1, "b": 2, "c": 3}
+
+map1["first"] = 1
+map1["second"] = 2
+
+e1, exist1 := map2["a"]  // 1, true
+e2, exist2 := map2["d"]  // 0, false
+
+delete(map2, "b")
+len(map2) // the number of keys
+
+```
+
+##### 知识点：
+
+- 声明`map`和声明数组类似，可以通过`make`定义，结构为`map[keyType]valueType`，也可以定义并且初始化值
+- 设置`map`中的值可以通过`map[key] = value`的形式
+- 访问`map`中元素的值可以通过`key`访问，返回结果又两个值，第一个是`key对应的value`，第二个是`该key是否存在，存在返回true，不存在返回false`
+- 可以通过`len(map)`方法查询`map`中`key`的数量
+- 可以通过`delete(map, key)`方法来删除`map`中的`key`
+
+### 流程控制
+
+### 条件判断 if...else...
+
+```go
+if x := 10; x > 5 {
+	do something
+} else if x == 5 {
+	do something
+} else {
+	do something
+}
+
+```
+
+##### 知识点
+
+- 逻辑和其他数语言相同，通过`if`判断条件是否为`true`，不为`true`则进入`else`语句
+- Go语言的语句不要小括号`()`包裹
+- **在语句中可以定义变量，该变量只在当前作用域生效**
+
+### 循环 for
 
 ```go
 
