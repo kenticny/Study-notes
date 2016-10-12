@@ -95,35 +95,78 @@ var (
 ### iota 累加常量
 
 ```go
-const a = iota         // 0
-const b = iota         // 0
+// iota只可以在常量中使用
+// iota的值是从0开始累加的，同一行使用逗号分隔的iota值相同，并且同一行内不会造成累加
 const (
-	c = iota           // 0
-	d = iota           // 1
-	e, f = iota, iota  // 2, 2
+	a    = iota
+	b    = iota
+	c, d = iota, iota
+	x    = iota
 )
+/**
+ * results:
+ *  a     : 0
+ *  b     : 1
+ *  c, d  : 2, 2
+ *  x     : 3
+ */
+
+// 使用单独常量赋值iota不会造成累加，每一次定义常量都会重新累计
+const e = iota
+const f = iota
+/**
+ * results:
+ *  e     : 0
+ *  f     : 0
+ */
+
+// 常量组中省略赋值的部分，将和上一个定义的表达式相同，iota正常累加
 const (
-	g = iota           // 0
-	h = iota           // 1
+	Mon = iota
+	Tue
+	Wed
+	Thu
+	Fri
+	Sat
+	Sun
 )
+/**
+ * results:
+ *  Mon   : 0
+ *  Tue   : 1
+ *  Wed   : 2
+ *  Thu   : 3
+ *  Fri   : 4
+ *  Sat   : 5
+ *  Sun   : 6
+ */
+
+// 当iota不为显式时，累加正常进行
+// 当需要iota为显式时，需要手动恢复
 const (
-	Mon = iota + 2     // 2
-	Tue                // 3
-	Wed                // 4
-	Thu = 100          // 100
-	Fri                // 100
-	Sat = iota + 3     // 8
-	Sun                // 9
+	g = iota * 3
+	h
+	i
+	j
+	k = "Hello"
+	l
+	m = iota + 5
+	n
 )
+/**
+ * results:
+ *  g     : 0 (0 * 3   iota = 0)
+ *  h     : 3 (1 * 3   iota = 1)
+ *  i     : 6 (2 * 3   iota = 2)
+ *  j     : 9 (3 * 3   iota = 3)
+ *  k     : "Hello"  ( iota = 4)
+ *  l     : "Hello"  ( iota = 5)
+ *  m     : 11 (6 + 5  iota = 6)
+ *  n     : 12 (7 + 5  iota = 7)
+ */
+
+
 ```
-
-##### 知识点：
-
-- `iota`为累加变量，只可以在常量中使用
-- `iota`从`0`开始，并且只在分组定义常量中累加
-- 当一个分组定义结束时，`iota`再次从`0`开始
-- 当两个变量同时在一行定义时，`iota`的值不进行累加
-- 当之定义第一`iota`时，下面定义的常量和第一个的表达式相同，只是iota做累加，并且在`iota`中断时，`iota`本身还会自动累加，只是不再显示，如果需要显示，需要手动恢复
 
 
 ------
